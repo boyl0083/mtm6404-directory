@@ -1,34 +1,39 @@
-// Function to generate an HTML list from an array of clients
+// List Function
 
-const list = (clients) => {
+function list(clients) {
     return clients.map((client, index) => 
-      `<li class="list-group-item d-flex justify-content-between" data-index="${index}">
+      `<li class="list-group-item d-flex justify-content-between" data-index="${client.index}">
         ${client.name} <strong>$${client.balance}</strong>
       </li>`
     ).join('');
-  };
+  }
   
-// Function to sort clients by a specified property
-
-  const order = (clients, property) => {
-    return [...clients].sort((a, b) => (a[property] > b[property] ? 1 : -1));
-  };
+  // Order Function
   
-// Function to calculate the total balance of all clients
-
-  const total = (clients) => {
+  function order(clients, property) {
+    return [...clients].sort((a, b) => {
+      if (typeof a[property] === 'string') {
+        return a[property].localeCompare(b[property], undefined, { sensitivity: 'base' });
+      }
+      return a[property] - b[property];
+    });
+  }  
+  
+  // Total Function
+  
+  function total(clients) {
     return clients.reduce((sum, client) => sum + client.balance, 0);
-  };
+  }
   
-// Function to find a client by index
-
-  const info = (index, clients) => {
-    return clients.find((_, i) => i === index) || null;
-  };
+  // Search Function
   
-// Function to search clients by name (case-insensitive)
-
-  const search = (query, clients) => {
-    const lowerQuery = query.toLowerCase();
-    return clients.filter(client => client.name.toLowerCase().includes(lowerQuery));
-  };
+  function search(query) {
+    const lowerCaseQuery = query.toLowerCase();
+    return clients.filter(client => client.name.toLowerCase().includes(lowerCaseQuery));
+  }
+  
+  // Info Function
+  
+  function info(index) {
+    return clients.find(client => client.index === index);
+  }  
